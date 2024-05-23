@@ -162,8 +162,8 @@ USE Udruga;
 
 CREATE TABLE IF NOT EXISTS Osoba(
     Id INT AUTO_INCREMENT PRIMARY KEY,
-    Ime VARCHAR(60),
-    Prezime VARCHAR(60),
+    Ime VARCHAR(30),
+    Prezime VARCHAR(30),
     Oib CHAR(11),
     Email VARCHAR(60),
     Broj_mobitela CHAR(11)
@@ -171,7 +171,7 @@ CREATE TABLE IF NOT EXISTS Osoba(
 
 CREATE TABLE IF NOT EXISTS Sticenik_udruge(
     Id INT AUTO_INCREMENT PRIMARY KEY,
-    Ime_zivotinje VARCHAR(60),
+    Ime_zivotinje VARCHAR(30),
     Vrsta ENUM('Pas', 'Macka'),
     Osoba INT,
     FOREIGN KEY Osoba REFERENCES Osoba(Id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -179,7 +179,44 @@ CREATE TABLE IF NOT EXISTS Sticenik_udruge(
 
 CREATE TABLE IF NOT EXISTS Prostor(
     Id INT AUTO_INCREMENT PRIMARY KEY,
-    Naziv VARCHAR(60),
+    Naziv VARCHAR(30),
     Sticenik_udruge INT,
     FOREIGN KEY Sticenik_udruge REFERENCES Sticenik_udruge(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+/*4. Dječji vrtić
+U dječjem vrtiću postoji više odgojnih skupina. Svaka odgojna skupina ima više djece
+i vodi ih jedna odgajateljica. Odgajateljica ima jednu stručnu spremu.*/
+
+CREATE DATABASE Vrtic;
+USE Vrtic;
+
+CREATE TABLE IF NOT EXISTS Odgojna_skupina(
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Naziv VARCHAR(30)
+);
+
+CREATE TABLE IF NOT EXISTS Dijete(
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Ime VARCHAR(30),
+    Prezime VARCHAR(30),
+);
+
+CREATE TABLE IF NOT EXISTS Skupina_Dijete(
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Odgojna_skupina INT,
+    Dijete INT,
+    FOREIGN KEY (Odgojna_skupina) REFERENCES Odgojna_skupina(Id) ON DELETE CASCADE ON UPDATE CASCADE;
+    FOREIGN KEY (Dijete) REFERENCES Dijete(Id) ON DELETE CASCADE ON UPDATE CASCADE;
+)
+
+CREATE TABLE IF NOT EXISTS Odgajateljica(
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Ime VARCHAR(30),
+    Prezime VARCHAR(30)
+);
+
+CREATE TABLE IF NOT EXISTS Strucna_sprema(
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Naziv ENUM('SSS', 'VSS', 'VVS')
 );
